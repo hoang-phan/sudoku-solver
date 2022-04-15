@@ -1,0 +1,38 @@
+[type=number]:nth-child(-n+9), [type=number]:nth-child(n+28):nth-child(-n+36), [type=number]:nth-child(n+55):nth-child(-n+63) {
+  border-top: 3px solid;
+}
+
+[type=number]:nth-child(n+73) {
+  border-bottom: 3px solid;
+}
+
+[type=number]:nth-child(3n) {
+  border-right: 3px solid;
+}
+
+[type=number]:nth-child(3n+1) {
+  border-left: 3px solid;
+}
+
+input[type=number] {
+  width: 40px;
+  padding: 10px 0;
+  outline: 0;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 40px));
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
