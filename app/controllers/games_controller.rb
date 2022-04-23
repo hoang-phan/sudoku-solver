@@ -4,7 +4,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    @matrix = Solver::ImprovedHumanized.new(game_params).call
+    @matrix = Solver::ImprovedHumanized.new(game_params).call || game_params
     render :new
   end
 
