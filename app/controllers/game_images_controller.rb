@@ -4,7 +4,7 @@ class GameImagesController < ApplicationController
 
   def create
     digits = `python3 image_processing.py #{game_image_params.tempfile.path}`
-    @matrix = Solver::Backtrack.new(digits.strip.split(',', 81)).call
+    @matrix = digits.strip.split(',', 81)
     render 'games/new'
   end
 

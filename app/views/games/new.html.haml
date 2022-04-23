@@ -3,4 +3,5 @@
     - @matrix.each do |cell|
       = number_field_tag "matrix[]", cell, onKeyPress: "if(this.value.length>0) return false;"
   = submit_tag "Solve"
+  = link_to "Image", new_game_image_path
   = link_to "Clear", new_game_path

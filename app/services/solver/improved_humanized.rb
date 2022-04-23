@@ -1,5 +1,5 @@
 module Solver
-  class Humanized
+  class ImprovedHumanized
     attr_accessor :matrix, :pool
 
     MATRIX_SIZE = 9
@@ -34,8 +34,11 @@ module Solver
       return matrix if all_filled?(matrix)
 
       while true
-        return nil if pool.all?(&:blank?)
-        els, index = next_fillable(pool)
+        index = next_fillable(matrix)
+        return nil if index.blank?
+
+        els = pool[index]
+        return nil if els.blank?
 
         new_matrix = matrix.dup
         new_pool = pool.dup
@@ -112,9 +115,9 @@ module Solver
       nil
     end
 
-    def next_fillable(pool)
-      pool.each_with_index.detect do |els, index|
-        els.count > 0
+    def next_fillable(matrix)
+      matrix.each_with_index do |value, index|
+        return index if value == 0
       end
     end
 

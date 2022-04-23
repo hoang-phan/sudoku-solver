@@ -4,7 +4,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    @matrix = Solver::Backtrack.new(game_params).call
+    @matrix = Solver::ImprovedHumanized.new(game_params).call
     render :new
   end
 
