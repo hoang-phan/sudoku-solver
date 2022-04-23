@@ -177,7 +177,6 @@ GEM
     redis (4.6.0)
     reline (0.3.1)
       io-console (~> 0.5)
-    rmagick (4.2.5)
     rspec-core (3.11.0)
       rspec-support (~> 3.11.0)
     rspec-expectations (3.11.0)
@@ -243,7 +242,6 @@ DEPENDENCIES
   puma (~> 5.0)
   rails (~> 7.0.2, >= 7.0.2.3)
   redis (~> 4.0)
-  rmagick
   rspec-rails
   rtesseract
   sprockets-rails
