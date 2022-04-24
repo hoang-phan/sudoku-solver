@@ -1,5 +1,10 @@
 import cv2
 import numpy as np
+import pytesseract
+
+LINE_DETECTION_DENSITY = 0.85
+WHITE_PIXEL_THRESHOLD = 50
+TESSERACT_CONFIG = r'--psm 10 --oem 3 -c tessedit_char_whitelist=123456789'
 
 def preprocess(img):
   imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -21,32 +26,53 @@ def biggestContour(contours):
         max_area = area
   return biggest,max_area
 
-def reorder(pts):
-  pts = pts.reshape((4, 2))
-  newPts = np.zeros((4, 1, 2), dtype=np.int32)
-  add = pts.sum(1)
-  newPts[0] = pts[np.argmin(add)]
-  newPts[3] = pts[np.argmax(add)]
-  diff = np.diff(pts, axis=1)
-  newPts[1] = pts[np.argmin(diff)]
-  newPts[2] = pts[np.argmax(diff)]
-  return newPts
+def solidifyGrid(img, width, height):
+  for x in range(width):
+    whitePixelCount = 0
 
-def splitBoxes(img):
-  rows = np.vsplit(img,9)
-  boxes=[]
-  for r in rows:
-    cols= np.hsplit(r,9)
-    for box in cols:
-      boxes.append(box)
+    for y in range(height):
+      if img[x][y] > WHITE_PIXEL_THRESHOLD:
+        whitePixelCount += 1
+
+    if whitePixelCount > LINE_DETECTION_DENSITY * height:
+      for y in range(height):
+        img[x][y] = 255
+
+  for y in range(height):
+    whitePixelCount = 0
+
+    for x in range(width):
+      if img[x][y] > WHITE_PIXEL_THRESHOLD:
+        whitePixelCount += 1
+
+    if whitePixelCount > LINE_DETECTION_DENSITY * width:
+      for x in range(width):
+        img[x][y] = 255
+
+  return img
+
+def contoursToBoxes(contours, width, height):
+  boxes = 81 * [0]
+  areaThresold = (width * height) / 81 / 2
+
+  for contour in contours:
+    area = cv2.contourArea(contour)
+    if area > areaThresold:
+      cx, cy, w, h = cv2.boundingRect(contour)
+      midX = cx + w // 2
+      midY = cy + h // 2
+      x = midX // (width // 9)
+      y = midY // (height // 9)
+      boxes[x * 9 + y] = [cx, cy, cx + w, cy + h]
+
   return boxes
 
-def getBoxes(num, method="left-to-right"):
-  flag = 0
-  if method == "right-to-left" or method == "bottom-to-top":
-    inverted = True
-  if method == "top-to-bottom" or method == "bottom-to-top":
-    flag = 1
-  boxes = [cv2.boundingRect(c) for c in num]
-  (num, boxes) = zip(*sorted(zip(num, boxes), key=lambda b:b[1][i]))
-  return (num, boxes)
+def getSudoku(img, boxes):
+  result = []
+
+  for i in range(81):
+    box = boxes[i]
+    boxImage = img[(box[0] + 2):(box[2] - 2), (box[1] + 2):(box[3] - 2)]
+    result.append(pytesseract.image_to_string(boxImage, config=TESSERACT_CONFIG).strip())
+
+  return ",".join(result)
