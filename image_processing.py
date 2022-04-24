@@ -4,8 +4,6 @@ import sys
 pathImg = sys.argv[1]
 
 img = cv2.imread(pathImg)
-height = img.shape[0]
-width = img.shape[1]
 imgThreshold = preprocess(img)
 
 contours, _ = cv2.findContours(imgThreshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
