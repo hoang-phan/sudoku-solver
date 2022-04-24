@@ -8,40 +8,18 @@ def preprocess(img):
 
   return imgThreshold
 
-def stackImages(imgArray, scale):
-  rows = len(imgArray)
-  cols = len(imgArray[0])
-
-  height = imgArray[0][0].shape[0]
-  width = imgArray[0][0].shape[1]
-
-  for x in range(0, rows):
-    for y in range(0, cols):
-      imgArray[x][y] = cv2.resize(imgArray[x][y], (0, 0), None, scale, scale)
-      if len(imgArray[x][y].shape) == 2:
-        imgArray[x][y] = cv2.cvtColor(imgArray[x][y], cv2.COLOR_GRAY2BGR)
-  imgBlank = np.zeros((height, width, 3), np.uint8)
-  hor = [imgBlank] * rows
-  hor_con = [imgBlank] * rows
-  for x in range(0, rows):
-    hor[x] = np.hstack(imgArray[x])
-    hor_con[x] = np.concatenate(imgArray[x])
-  ver = np.vstack(hor)
-  ver_con = np.concatenate(hor)
-  return ver
-
 def biggestContour(contours):
   biggest = np.array([])
-  maxArea = 0
+  max_area = 0
   for i in contours:
     area = cv2.contourArea(i)
     if area > 50:
       peri = cv2.arcLength(i, True)
       approx = cv2.approxPolyDP(i, 0.02 * peri, True)
-      if area > maxArea and len(approx) == 4:
+      if area > max_area and len(approx) == 4:
         biggest = approx
-        maxArea = area
-  return biggest, maxArea
+        max_area = area
+  return biggest,max_area
 
 def reorder(pts):
   pts = pts.reshape((4, 2))

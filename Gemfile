@@ -15,6 +15,7 @@ gem "redis", "~> 4.0"
 gem "bootsnap", require: false
 gem "hamlit-rails"
 gem "rtesseract"
+gem "rack-cors"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
