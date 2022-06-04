@@ -10,6 +10,8 @@ This projects are shipped with 3 functionalities:
 	- Backtrack
 	- Humanized
 	- Humanized with fail fast
+- Ability to read the sudoku from image
+- API endpoint and a sample Tampermonkey plugin to sudoku.ner
 
 ## Getting Started
 
