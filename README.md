@@ -21,16 +21,10 @@ Ruby 3, Rails 7, Python 3, pip3, Ubuntu (preferred) or MacOS
 
 ### Installing
 
-Clone this repository
-
-```sh
-https://github.com/hoang-phan/sudoku-solver.git
-```
-
 Install Ruby on Rails gems
 
 ```sh
-cd sudoku-solver && bundle
+bundle
 ```
 
 Install apt packages:
